@@ -1,19 +1,18 @@
 'use strict';
 
-var http = require('http');
+var express = require('express');
+var path = require('path');
+var app = express();
 var port = 8080;
-var host = '127.0.0.1';
 if(process.env.NODE_ENV == 'production') {
     port = process.env.PORT;
-    host = 'afternoon-everglades-97004.herokuapp.com';
 }
 
-http.createServer(function(request, response) {
-    response.writeHead(200);
-    response.write("<html><body><p>Wazzup?</p></body></html>");
-    response.end();
-})
+app.use(express.static('www'));
+app.get('*', (request, response) => {
+    response.sendFile(path.join(__dirname, 'www/index.html'));
+});
 
-.listen(port, host);
-
-console.log("Supah fly bot listening...");
+app.listen(port, () => {
+    console.log("Supah fly bot listening...");
+});
