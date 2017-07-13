@@ -13,13 +13,8 @@ var botToken = process.env.BOT_TOKEN || "AbcEEE";
 var updates = [];
 
 app.post(`/${botToken}`, (request, response) => {
-    updates.push({
-        date: new Date(),
-        query: request.query,
-        params: request.params,
-        body: request.body
-    });
-    response.end();    
+    updates.push(request.body);
+    response.end();
 });
 
 app.get('/getUpdates', (request, response) => {
