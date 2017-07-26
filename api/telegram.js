@@ -3,14 +3,15 @@
 var requestModule = require('request');
 var botToken = process.env.BOT_TOKEN || "AbcEEE";
 
-exports.sendMessage = function(chatId, text, replyToMessageId) {
+exports.sendMessage = function(chatId, text, replyToMessageId, replyMarkup) {
     return new Promise((resolve, reject) => {
         requestModule.post({
             url: `https://api.telegram.org/bot${botToken}/sendMessage`,
             form: {
                 chat_id : chatId,
                 text: text,
-                reply_to_message_id: replyToMessageId
+                reply_to_message_id: replyToMessageId,
+                reply_markup: replyMarkup
             }
         }, (error, response, body) => {
             if(error) {

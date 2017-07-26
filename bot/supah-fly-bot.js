@@ -1,7 +1,9 @@
-var DefaultHandler = require('./message-handlers/default-handler')
+var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
+var DefaultHandler = require('./message-handlers/default-handler');
 var SupahFlyBot = function() {};
 
 var messageHandlers = [
+    new ReplyMarkupHandler(),
     new DefaultHandler()
 ];
 // Process telegram update brought through bot webhook
