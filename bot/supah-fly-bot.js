@@ -1,8 +1,10 @@
+var InlineMarkupHandler = require('./message-handlers/inline-markup-handler');
 var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
 var DefaultHandler = require('./message-handlers/default-handler');
 var SupahFlyBot = function() {};
 
 var messageHandlers = [
+    new InlineMarkupHandler(),
     new ReplyMarkupHandler(),
     new DefaultHandler()
 ];
