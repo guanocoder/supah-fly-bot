@@ -3,7 +3,7 @@ var telegram = require("../../api/telegram");
 var InlineMarkupHandler = function() {};
 
 var isCallbackQuery = false;
-var messageText = "Make your choice!";
+var messageText = "Сделай выбор!";
 
 // InlineKeyboardMarkup example
 InlineMarkupHandler.prototype.canHandle = function(update) {
@@ -25,11 +25,12 @@ InlineMarkupHandler.prototype.handle = function(update) {
     if(isCallbackQuery) {
         let chatId = update.callback_query.message.chat.id;
         let data = update.callback_query.data;
+        let showAlert = (data == "withNotification") ? true : false;
         let userName = update.callback_query.from.username;
-        let messageText = `@${userName} have chosen '${data}'`;
+        let messageText = `@${userName} сделал свой выбор и теперь может заткнуться!`;
         return new Promise((resolve, reject) => {
             resolve(
-                telegram.sendMessage(chatId, messageText)
+                telegram.answerCallbackQuery(update.callback_query.id, messageText, showAlert)
             )
         });
     }
@@ -38,11 +39,11 @@ InlineMarkupHandler.prototype.handle = function(update) {
             telegram.sendMessage(update.message.chat.id, messageText, null, JSON.stringify({
                 "inline_keyboard" : [
                     [{
-                        text: "First Choice",
-                        callback_data: "choice 1"
+                        text: "обычно",
+                        callback_data: "normal"
                     }, {
-                        text: "Second Choice",
-                        callback_data: "choice 2"
+                        text: "с нотификацией",
+                        callback_data: "withNotification"
                     }]
                 ]                
             }))

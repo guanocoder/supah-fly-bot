@@ -40,3 +40,22 @@ exports.sendChatAction = function(chatId, action) {
         });
     });
 };
+
+exports.answerCallbackQuery = function(callbackQueryId, text, showAlert = false) {
+    return new Promise((resolve, reject) => {
+        requestModule.post({
+            url: `https://api.telegram.org/bot${botToken}/answerCallbackQuery`,
+            form: {
+                callback_query_id : callbackQueryId,
+                text: text,
+                show_alert: showAlert
+            }
+        }, (error, response, body) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(response);
+            }     
+        });
+    });
+}
