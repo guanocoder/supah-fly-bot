@@ -3,7 +3,7 @@ var telegram = require("../../api/telegram");
 var InlineMarkupHandler = function() {};
 
 var isCallbackQuery = false;
-var messageText = "Сделай выбор!";
+var messageText = "Как тебе сказать?";
 
 // InlineKeyboardMarkup example
 InlineMarkupHandler.prototype.canHandle = function(update) {
@@ -23,16 +23,33 @@ InlineMarkupHandler.prototype.canHandle = function(update) {
 
 InlineMarkupHandler.prototype.handle = function(update) {
     if(isCallbackQuery) {
+        let callbackId = update.callback_query.id;
         let chatId = update.callback_query.message.chat.id;
         let data = update.callback_query.data;
-        let showAlert = (data == "withNotification") ? true : false;
         let userName = update.callback_query.from.username;
-        let messageText = `@${userName} сделал свой выбор и теперь может заткнуться!`;
-        return new Promise((resolve, reject) => {
-            resolve(
-                telegram.answerCallbackQuery(update.callback_query.id, messageText, showAlert)
-            )
-        });
+        let messageText = `@${userName} заткнись!`;
+
+        if (data == "notification") {
+            return new Promise((resolve, reject) => {
+                resolve(
+                    telegram.answerCallbackQuery(callbackId, messageText)
+                );
+            });
+        } else if (data == "alert") {
+            return new Promise((resolve, reject) => {
+                resolve(
+                    telegram.answerCallbackQuery(callbackId, messageText, true)
+                );
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                resolve(
+                    telegram.answerCallbackQuery(callbackId).then(() => {
+                        return telegram.sendMessage(chatId, messageText);
+                    })
+                );
+            });
+        }
     }
     return new Promise((resolve, reject) => {
         resolve(
@@ -42,8 +59,11 @@ InlineMarkupHandler.prototype.handle = function(update) {
                         text: "обычно",
                         callback_data: "normal"
                     }, {
-                        text: "с нотификацией",
-                        callback_data: "withNotification"
+                        text: "нотификацией",
+                        callback_data: "notification"
+                    }, {
+                        text: "диалогом",
+                        callback_data: "alert"
                     }]
                 ]                
             }))
