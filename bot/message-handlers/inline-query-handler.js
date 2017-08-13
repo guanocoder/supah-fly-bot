@@ -13,13 +13,15 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
         resolve(
-            telegram.answerInlineQuery(update.inline_query.id, JSON.stringify([
-                {
-                    type: "sticker",
-                    id: 10000 + parseInt(Math.random() * 10000),
-                    sticker_file_id: "CAADAgADqQADWQMDAAE8ExBJs_WvHAI"
-                }
-            ]))
+            telegram.answerInlineQuery(update.inline_query.id, [
+                JSON.stringify(
+                    {
+                        type: "sticker",
+                        id: 10000 + parseInt(Math.random() * 10000),
+                        sticker_file_id: "CAADAgADqQADWQMDAAE8ExBJs_WvHAI"
+                    }
+                )
+            ])
         );
     });
 };
