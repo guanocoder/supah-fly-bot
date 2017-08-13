@@ -58,4 +58,23 @@ exports.answerCallbackQuery = function(callbackQueryId, text, showAlert = false)
             }     
         });
     });
-}
+};
+
+exports.answerInlineQuery = function(inlineQueryId, results) {
+    console.log(`Sending an answer to InlineQuery ${inlineQueryId}: ${JSON.stringify(results)}`);
+    return new Promise((resolve, reject) => {
+        requestModule.post({
+            url: `https://api.telegram.org/bot${botToken}/answerInlineQuery`,
+            form: {
+                inline_query_id : inlineQueryId,
+                results: results
+            }
+        }, (error, response, body) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(response);
+            }     
+        });
+    });
+};
