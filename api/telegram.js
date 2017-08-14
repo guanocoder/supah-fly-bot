@@ -70,6 +70,7 @@ exports.answerInlineQuery = function(inlineQueryId, results) {
                 results: results
             }
         }, (error, response, body) => {
+            console.log(`Received Response from inlineQuery: ${JSON.stringify(response)}`);
             if(error) {
                 reject(error);
             } else {
