@@ -17,7 +17,7 @@ InlineQueryHandler.prototype.handle = function(update) {
                 JSON.stringify([
                     {
                         type: "sticker",
-                        id: 10000000 + parseInt(Math.random() * 10000000),
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
                         //sticker_file_id: "AAQCABMmREsNAAShSvrOvhTY9aZdAAIC" // thumb.file_id
                         sticker_file_id: "CAADAgADqQADWQMDAAE8ExBJs_WvHAI",
                         input_message_content: {
