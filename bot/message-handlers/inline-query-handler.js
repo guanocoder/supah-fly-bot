@@ -18,12 +18,38 @@ InlineQueryHandler.prototype.handle = function(update) {
                     {
                         type: "sticker",
                         id: String(10000000 + parseInt(Math.random() * 10000000)),
-                        //sticker_file_id: "AAQCABMmREsNAAShSvrOvhTY9aZdAAIC" // thumb.file_id
-                        sticker_file_id: "CAADAgADqQADWQMDAAE8ExBJs_WvHAI",
-                        input_message_content: {
-                            message_text: "And nothin!"
-                        }
-                    }
+                        sticker_file_id: "CAADAgADqQADWQMDAAE8ExBJs_WvHAI", // заткнись, я воевал!
+                    },
+                    {
+                        type: "sticker",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        sticker_file_id: "CAADAgADtgADNPsXBpaFuBVOTp4lAg" // anime - молчи г*вно
+                    },
+                    {
+                        type: "sticker",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        sticker_file_id: "CAADBAADaQEAAjW7NgABVwW8yS94zhYC" // spongebob - I don't give a funk
+                    },
+                    {
+                        type: "sticker",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        sticker_file_id: "CAADAgADFgEAAsnHuArAgVwG6bz5kwI" // жирик - пшёл вон!
+                    },
+                    {
+                        type: "sticker",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        sticker_file_id: "CAADAgADVAIAAjT7FwZf3h1dJFbWtwI" // anime - завали уже!
+                    },
+                    {
+                        type: "sticker",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        sticker_file_id: "CAADAgADNwMAApkvSwrd8kC724H93QI" // дружко - не могу ответить!
+                    },
+                    {
+                        type: "sticker",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        sticker_file_id: "CAADAgADNgADaJpdDMPkFTIssktrAg" // та замовкнi тi вже!
+                    },
                 ])
             )
         );
