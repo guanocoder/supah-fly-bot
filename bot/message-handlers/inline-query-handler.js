@@ -13,8 +13,8 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
         resolve(
-            telegram.answerInlineQuery(update.inline_query.id, [
-                JSON.stringify(
+            telegram.answerInlineQuery(update.inline_query.id, 
+                JSON.stringify([
                     {
                         type: "sticker",
                         id: 10000000 + parseInt(Math.random() * 10000000),
@@ -24,8 +24,8 @@ InlineQueryHandler.prototype.handle = function(update) {
                             message_text: "And nothin!"
                         }
                     }
-                )
-            ])
+                ])
+            )
         );
     });
 };
