@@ -29,7 +29,7 @@ InlineQueryHandler.prototype.handle = function(update) {
                 .concat(inlineDictionary["nothing to say"]);
         }
 
-        inlineChoices.map((choiceItem) => {
+        inlineChoices = inlineChoices.map((choiceItem) => {
             choiceItem.id = String(10000000 + parseInt(Math.random() * 10000000));
             switch(choiceItem.type) {
                 case "sticker":
