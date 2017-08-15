@@ -7,7 +7,7 @@ var messageText = "Как тебе сказать?";
 
 // InlineKeyboardMarkup example
 InlineMarkupHandler.prototype.canHandle = function(update) {
-    if(update && update.message) {
+    if(update && update.message && update.message.text) {
         if(update.message.text.toLowerCase().startsWith("/inlinemarkup")) {
             return true;
         }
