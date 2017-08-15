@@ -59,6 +59,21 @@ InlineQueryHandler.prototype.handle = function(update) {
                         type: "sticker",
                         id: String(10000000 + parseInt(Math.random() * 10000000)),
                         sticker_file_id: "CAADAgADkAADaJpdDIc4tgssUVXpAg" // а что если завалишь?
+                    },
+                    {
+                        type: "mpeg4_gif",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        mpeg4_file_id: "CgADBAADNSEAAs0aZAfUl1x1IJllcAI" // stfu pitch!
+                    },
+                    {
+                        type: "mpeg4_gif",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        mpeg4_file_id: "CgADBAAD9J8AAkkcZAcHStrL64TypAI" // spongebob goldfishing
+                    },
+                    {
+                        type: "mpeg4_gif",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        mpeg4_file_id: "CgADBAADaZ8AAnQXZAeLI66l6MtbeAI" // Harrison Ford - who gives a puck?
                     }
                 ])
             )
