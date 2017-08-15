@@ -51,10 +51,14 @@ InlineQueryHandler.prototype.handle = function(update) {
                         sticker_file_id: "CAADAgADNgADaJpdDMPkFTIssktrAg" // та замовкнi тi вже!
                     },
                     {
-                        // CAADAgADSgEAAjeEMAABYXK6nmHQkkAC
                         type: "sticker",
                         id: String(10000000 + parseInt(Math.random() * 10000000)),
                         sticker_file_id: "CAADAgADSgEAAjeEMAABYXK6nmHQkkAC" // troll.uz - заткниииись!
+                    },
+                    {
+                        type: "sticker",
+                        id: String(10000000 + parseInt(Math.random() * 10000000)),
+                        sticker_file_id: "CAADAgADkAADaJpdDIc4tgssUVXpAg" // а что если завалишь?
                     }
                 ])
             )
