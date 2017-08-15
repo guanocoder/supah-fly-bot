@@ -30,7 +30,7 @@ InlineQueryHandler.prototype.handle = function(update) {
         }
 
         inlineChoices.map((choiceItem) => {
-            chiceItem.id = String(10000000 + parseInt(Math.random() * 10000000));
+            choiceItem.id = String(10000000 + parseInt(Math.random() * 10000000));
             switch(choiceItem.type) {
                 case "sticker":
                     choiceItem.sticker_file_id = choiceItem.file_id;
