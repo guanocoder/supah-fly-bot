@@ -13,14 +13,15 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
-        let inlineChoices = inlineDictionary[update.inline_query.query];
+        let inlineChoices = inlineDictionary[update.inline_query.query.toLowerCase()];
 
         while(typeof(inlineChoices) == "string") {
             inlineChoices = inlineDictionary[inlineChoices];
         }
 
+        // return this bunch of choices if no match is found
         if(!Array.isArray(inlineChoices)) {
-            inlineDictionary =
+            inlineChoices =
                 inlineDictionary["stfu"]
                 .concat(inlineDictionary["blah"])
                 .concat(inlineDictionary["no care"])
