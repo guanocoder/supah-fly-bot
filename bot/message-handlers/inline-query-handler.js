@@ -26,7 +26,8 @@ InlineQueryHandler.prototype.handle = function(update) {
                 .concat(inlineDictionary["blah"])
                 .concat(inlineDictionary["no care"])
                 .concat(inlineDictionary["gtfo"])
-                .concat(inlineDictionary["nothing to say"]);
+                .concat(inlineDictionary["nothing to say"])
+                .concat(inlineDictionary["suck"]);
         }
 
         inlineChoices = inlineChoices.map((choiceItem) => {
@@ -40,6 +41,9 @@ InlineQueryHandler.prototype.handle = function(update) {
                     break;
                 case "mpeg4_gif":
                     resultItem.mpeg4_file_id = choiceItem.file_id;
+                    break;
+                case "photo":
+                    resultItem.photo_file_id = choiceItem.file_id;
                     break;
                 default:
                     return null;

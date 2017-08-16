@@ -3,6 +3,7 @@ var InlineMarkupHandler = require('./message-handlers/inline-markup-handler');
 var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
 var StickerHandler = require('./message-handlers/sticker-handler');
 var DocumentHandler = require('./message-handlers/document-handler');
+var PhotoHandler = require('./message-handlers/photo-handler');
 var DefaultHandler = require('./message-handlers/default-handler');
 var SupahFlyBot = function() {};
 
@@ -12,6 +13,7 @@ var messageHandlers = [
     new ReplyMarkupHandler(),
     new DocumentHandler(),
     new StickerHandler(),
+    new PhotoHandler(),
     new DefaultHandler()
 ];
 // Process telegram update brought through bot webhook

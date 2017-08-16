@@ -78,5 +78,23 @@ module.exports = {
             type: "sticker",
             file_id: "CAADAgADNwMAApkvSwrd8kC724H93QI" // дружко - не могу ответить!
         }
+    ],
+    "сосать": "suck",
+    "соси": "suck",
+    "it aint sucking": "suck",
+    "it ain't sucking": "suck",
+    "it aint gonna suck": "suck",
+    "it ain't gonna suck": "suck",
+    "it aint gonna suck itself": "suck",
+    "it ain't gonna suck itself": "suck",
+    "it won't suck": "suck",
+    "it wont suck": "suck",
+    "it wont suck itself": "suck",
+    "it won't suck itself": "suck",
+    "suck": [
+        {
+            type: "photo",
+            file_id: "AgADAgADRagxG2yqoEi6nhhRstbxBcsPSw0ABGZBn0-GWJqBw3oNAAEC" // spongebob - it ain't gonna suck itself
+        }
     ]
 };
