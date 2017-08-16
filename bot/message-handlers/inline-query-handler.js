@@ -33,20 +33,22 @@ InlineQueryHandler.prototype.handle = function(update) {
 
         console.log("before mapping: " + JSON.stringify(inlineChoices));
         inlineChoices = inlineChoices.map((choiceItem) => {
-            choiceItem.id = String(10000000 + parseInt(Math.random() * 10000000));
+            let resultItem = {
+                type: choiceItem.type,
+                id: String(10000000 + parseInt(Math.random() * 10000000))
+            };
             switch(choiceItem.type) {
                 case "sticker":
-                    choiceItem.sticker_file_id = choiceItem.file_id;
+                    resultItem.sticker_file_id = choiceItem.file_id;
                     break;
                 case "mpeg4_gif":
-                    choiceItem.mpeg4_file_id = choiceItem.file_id;
+                    resultItem.mpeg4_file_id = choiceItem.file_id;
                     break;
                 default:
                     return null;
                     break;
             }
-            delete choiceItem.file_id;
-            return choiceItem;
+            return resultItem;
         });
         console.log("sending array to telegram: " + JSON.stringify(inlineChoices));
         resolve(
