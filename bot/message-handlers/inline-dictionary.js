@@ -31,6 +31,10 @@ module.exports = {
         {
             type: "mpeg4_gif",
             file_id: "CgADBAADNSEAAs0aZAfUl1x1IJllcAI" // stfu pitch!
+        },
+        {
+            type: "sticker",
+            file_id: "CAADAgADowADaJpdDDJzdHVIOq1OAg" // mraz
         }
     ],
     "goldfish": "blah",
