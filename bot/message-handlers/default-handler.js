@@ -32,7 +32,7 @@ DefaultHandler.prototype.handle = function(update) {
             }).then(() => {
                 return simulateUserDelay(5000, 3000);
             }).then(() => {
-                return telegram.sendMessage(update.message.chat.id, "заткнись!", update.message.message_id, 
+                return telegram.sendMessage(update.message.chat.id, "заткнись! мой хероку длиннее твоего!", update.message.message_id, 
                     JSON.stringify({ hide_keyboard: true })
                 );
             })
