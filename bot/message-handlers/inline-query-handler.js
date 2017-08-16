@@ -14,11 +14,9 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
         let inlineChoices = inlineDictionary[update.inline_query.query.toLowerCase()];
-        console.log("initialized array: " + JSON.stringify(inlineChoices));
 
         while(typeof(inlineChoices) == "string") {
             inlineChoices = inlineDictionary[inlineChoices];
-            console.log("while cycle: " + JSON.stringify(inlineChoices));
         }
 
         // return this bunch of choices if no match is found
@@ -31,7 +29,6 @@ InlineQueryHandler.prototype.handle = function(update) {
                 .concat(inlineDictionary["nothing to say"]);
         }
 
-        console.log("before mapping: " + JSON.stringify(inlineChoices));
         inlineChoices = inlineChoices.map((choiceItem) => {
             let resultItem = {
                 type: choiceItem.type,
@@ -50,7 +47,7 @@ InlineQueryHandler.prototype.handle = function(update) {
             }
             return resultItem;
         });
-        console.log("sending array to telegram: " + JSON.stringify(inlineChoices));
+
         resolve(
             telegram.answerInlineQuery(update.inline_query.id, 
                 JSON.stringify(inlineChoices)
