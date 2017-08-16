@@ -14,9 +14,11 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
         let inlineChoices = inlineDictionary[update.inline_query.query.toLowerCase()];
+        console.log("initialized array: " + JSON.stringify(inlineChoices));
 
         while(typeof(inlineChoices) == "string") {
             inlineChoices = inlineDictionary[inlineChoices];
+            console.log("while cycle: " + JSON.stringify(inlineChoices));
         }
 
         // return this bunch of choices if no match is found
@@ -29,6 +31,7 @@ InlineQueryHandler.prototype.handle = function(update) {
                 .concat(inlineDictionary["nothing to say"]);
         }
 
+        console.log("before mapping: " + JSON.stringify(inlineChoices));
         inlineChoices = inlineChoices.map((choiceItem) => {
             choiceItem.id = String(10000000 + parseInt(Math.random() * 10000000));
             switch(choiceItem.type) {
