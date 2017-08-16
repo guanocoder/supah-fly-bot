@@ -45,7 +45,7 @@ InlineQueryHandler.prototype.handle = function(update) {
             delete choiceItem.file_id;
             return choiceItem;
         });
-        
+        console.log("sending array to telegram: " + JSON.stringify(inlineChoices));
         resolve(
             telegram.answerInlineQuery(update.inline_query.id, 
                 JSON.stringify(inlineChoices)
