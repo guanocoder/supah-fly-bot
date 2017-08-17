@@ -11,21 +11,32 @@ process.on('exit', function() {
 
 exports.addKeyword = function(keyword) {
     return pool.query({
-        text: "insert into inline_keyword(keyword) values($1)",
+        text: "insert into inline_keyword(keyword) values($1) on conflict do nothing",
         values: [keyword]
     });
-}
+};
 
 exports.addResult = function(type, fileId) {
     return pool.query({
-        text: "insert into inline_result(file_id, type) values($1, $2)",
+        text: "insert into inline_result(file_id, type) values($1, $2) on conflict do nothing",
         values: [fileId, type]
     });
-}
+};
 
 exports.addKeywordResult = function(keyword, fileId) {
     return pool.query({
-        text: "insert into inline_keyword_result(keyword, file_id) values($1, $2)",
+        text: "insert into inline_keyword_result(keyword, file_id) values($1, $2) on conflict do nothing",
         values: [keyword, fileId]
     });
-}
+};
+
+exports.lookupResults = function(keyword) {
+    return pool.query({
+        text: `select inline_result.type, inline_keyword_result.file_id
+               from inline_result
+               join inline_keyword_result on inline_result.file_id = inline_keyword_result.file_id
+               where inline_keyword_result.keyword = $1`,
+        values: [keyword],
+        //rowMode: 'array'
+    });
+};
