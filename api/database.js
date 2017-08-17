@@ -1,0 +1,31 @@
+'use strict';
+
+const pg = require('pg');
+pg.defaults.ssl = true;
+
+let pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+process.on('exit', function() {
+    console.log("Drying out connnection pool!");
+    pool.end(); 
+});
+
+exports.addKeyword = function(keyword) {
+    return pool.query({
+        text: "insert into inline_keyword(keyword) values($1)",
+        values: [keyword]
+    });
+}
+
+exports.addResult = function(type, fileId) {
+    return pool.query({
+        text: "insert into inline_result(file_id, type) values($1, $2)",
+        values: [fileId, type]
+    });
+}
+
+exports.addKeywordResult = function(keyword, fileId) {
+    return pool.query({
+        text: "insert into inline_keyword_result(keyword, file_id) values($1, $2)",
+        values: [keyword, fileId]
+    });
+}
