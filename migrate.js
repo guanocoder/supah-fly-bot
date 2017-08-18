@@ -1,6 +1,6 @@
 'use strict';
 
-process.env["DATABASE_URL"] = "postgres://ojhihnwjpurwmp:3d14409789d33d1c42db98f5060a0df1cd4e43ce251d23c3566994089ea707eb@ec2-54-227-252-202.compute-1.amazonaws.com:5432/d635tcd1rl354v";
+process.env["DATABASE_URL"] = "";
 
 var database = require('./api/database');
 var inlineDictionary = require("./bot/message-handlers/inline-dictionary");
