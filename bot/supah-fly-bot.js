@@ -1,6 +1,7 @@
 var InlineQueryHandler = require("./message-handlers/inline-query-handler");
 var InlineMarkupHandler = require('./message-handlers/inline-markup-handler');
 var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
+var InputHandler = require('./message-handlers/input-handler');
 var StickerHandler = require('./message-handlers/sticker-handler');
 var DocumentHandler = require('./message-handlers/document-handler');
 var PhotoHandler = require('./message-handlers/photo-handler');
@@ -11,6 +12,7 @@ var messageHandlers = [
     new InlineQueryHandler(),
     new InlineMarkupHandler(),
     new ReplyMarkupHandler(),
+    new InputHandler(),
     new DocumentHandler(),
     new StickerHandler(),
     new PhotoHandler(),
