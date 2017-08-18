@@ -74,10 +74,10 @@ InputHandler.prototype.handle = function(update) {
             } else if(context.state == "inputtingKeyword") {
                 if(update.message.text) {
                     resolve(
-                        database.addKeyword(update.message.text).then(() => {
+                        database.addKeyword(update.message.text.toLowerCase()).then(() => {
                             return database.addResult(context.type, context.file_id);
                         }).then(() => {
-                            return database.addKeywordResult(update.message.text, context.file_id);
+                            return database.addKeywordResult(update.message.text.toLowerCase(), context.file_id);
                         }).then(() => {
                             return telegram.sendMessage(update.message.chat.id, "Who's your daddy!?");
                         }).then(() => {
