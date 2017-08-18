@@ -14,7 +14,7 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
-        database.lookupResults[update.inline_query.query.toLowerCase()].then((results) => {
+        database.lookupResults(update.inline_query.query.toLowerCase()).then((results) => {
             // return this bunch of choices if no match is found
             if(!Array.isArray(results)) {
                 results =
@@ -49,7 +49,7 @@ InlineQueryHandler.prototype.handle = function(update) {
             });
 
             resolve(telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(inlineChoices)));
-            
+
         }).catch((error) => {
             reject(error);
         });
