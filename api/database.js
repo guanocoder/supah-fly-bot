@@ -9,6 +9,15 @@ process.on('exit', function() {
     pool.end(); 
 });
 
+exports.registerHit = function(fileId) {
+    return pool.query({
+        text: `update inline_result
+               set hits = hits + 1
+               where file_id = $1`,
+        values: [fileId]
+    });
+}
+
 exports.addResult = function(type, fileId) {
     return pool.query({
         text: "insert into inline_result(file_id, type) values($1, $2) on conflict do nothing",
