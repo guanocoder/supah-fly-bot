@@ -9,13 +9,6 @@ process.on('exit', function() {
     pool.end(); 
 });
 
-exports.addKeyword = function(keyword) {
-    return pool.query({
-        text: "insert into inline_keyword(keyword) values($1) on conflict do nothing",
-        values: [keyword]
-    });
-};
-
 exports.addResult = function(type, fileId) {
     return pool.query({
         text: "insert into inline_result(file_id, type) values($1, $2) on conflict do nothing",

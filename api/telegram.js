@@ -61,7 +61,6 @@ exports.answerCallbackQuery = function(callbackQueryId, text, showAlert = false)
 };
 
 exports.answerInlineQuery = function(inlineQueryId, results) {
-    console.log(`Sending an answer to InlineQuery ${inlineQueryId}: ${JSON.stringify(results)}`);
     return new Promise((resolve, reject) => {
         requestModule.post({
             url: `https://api.telegram.org/bot${botToken}/answerInlineQuery`,
@@ -70,7 +69,6 @@ exports.answerInlineQuery = function(inlineQueryId, results) {
                 results: results
             }
         }, (error, response, body) => {
-            console.log(`Received Response from inlineQuery: ${JSON.stringify(response)}`);
             if(error) {
                 reject(error);
             } else {
