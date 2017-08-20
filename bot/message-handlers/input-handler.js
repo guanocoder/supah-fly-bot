@@ -66,7 +66,7 @@ InputHandler.prototype.handle = function(update) {
                     )
                 } else {
                     resolve(
-                        telegram.sendMessage(update.message.chat.id, "Now send in your remarkably smart key word to bind to this item!").then(() => {
+                        telegram.sendMessage(update.message.chat.id, "Now send in your remarkably smart keyword to bind this item to!").then(() => {
                             context.state = "inputtingKeyword";
                         })
                     );
