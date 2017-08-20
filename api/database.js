@@ -33,12 +33,22 @@ exports.addKeywordResult = function(keyword, fileId) {
 };
 
 exports.lookupResults = function(keyword) {
+    let parameter = (typeof(keyword) == 'string') ? `%${keyword.toLowerCase()}%` : '';
     return pool.query({
-        text: `select inline_result.type, inline_keyword_result.file_id
-               from inline_result
-               join inline_keyword_result on inline_result.file_id = inline_keyword_result.file_id
-               where inline_keyword_result.keyword = $1`,
-        values: [keyword],
+        // Always return result, even if there is no match
+        // matched items first, then by popularity and finally by creation date
+        text:  `SELECT
+                    results.type, results.file_id,
+                    CASE WHEN keyword LIKE $1 THEN true ELSE false END as isMatch
+                FROM
+                    inline_keyword_result keys
+                JOIN
+                    inline_result results ON results.file_id = keys.file_id
+                GROUP BY results.type, results.file_id, isMatch
+                ORDER BY
+                    isMatch DESC, hits DESC, createdate DESC
+                LIMIT 50`, // telegram bot API's answerInlineQuery method does not allow more than 50 results per query.
+        values: [parameter],
         //rowMode: 'array'
     });
 };

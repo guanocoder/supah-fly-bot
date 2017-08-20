@@ -1,6 +1,5 @@
 var telegram = require("../../api/telegram");
 var database = require("../../api/database");
-var inlineDictionary = require("./inline-dictionary");
 
 var InlineQueryHandler = function() {};
 
@@ -15,20 +14,8 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
         database.lookupResults(update.inline_query.query.toLowerCase()).then((result) => {
-            let inlineChoices = null;                        
-            if(result == null || !Array.isArray(result.rows) || result.rows.length == 0) {
-                // return this bunch of choices if no match is found
-                inlineChoices = inlineDictionary["stfu"]
-                    .concat(inlineDictionary["blah"])
-                    .concat(inlineDictionary["no care"])
-                    .concat(inlineDictionary["gtfo"])
-                    .concat(inlineDictionary["nothing to say"])
-                    .concat(inlineDictionary["suck"]);
-            } else {
-                inlineChoices = result.rows;
-            }
-
-            inlineChoices = inlineChoices.map((row) => {
+            // database lookup query always returns results, even if no match is found
+            let inlineChoices = result.rows.map((row) => {
                 let resultItem = {
                     type: row.type,
                     id: String(10000000 + parseInt(Math.random() * 10000000))
