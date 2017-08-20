@@ -45,7 +45,7 @@ exports.lookupResults = function(keyword) {
                     WHERE keyword LIKE $1
                     GROUP BY file_id
                 ) q JOIN inline_result ON q.file_id = inline_result.file_id
-                ORDER BY hits, createdate
+                ORDER BY hits DESC, createdate DESC
                 LIMIT 50`, // telegram bot API's answerInlineQuery method does not allow more than 50 results per query.
         values: [parameter],
         //rowMode: 'array'
@@ -58,7 +58,7 @@ exports.getMostPopular = function() {
             type, file_id
         FROM
             inline_result
-        ORDER BY hits, createdate
+        ORDER BY hits DESC, createdate DESC
         LIMIT 50
     `); // telegram bot API's answerInlineQuery method does not allow more than 50 results per query.
 }
