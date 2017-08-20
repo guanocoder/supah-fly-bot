@@ -35,20 +35,30 @@ exports.addKeywordResult = function(keyword, fileId) {
 exports.lookupResults = function(keyword) {
     let parameter = (typeof(keyword) == 'string') ? `%${keyword.toLowerCase()}%` : '';
     return pool.query({
-        // Always return result, even if there is no match
-        // matched items first, then by popularity and finally by creation date
+        // sort by popularity and then by creation date
         text:  `SELECT
-                    results.type, results.file_id,
-                    CASE WHEN keyword LIKE $1 THEN true ELSE false END as isMatch
-                FROM
-                    inline_keyword_result keys
-                JOIN
-                    inline_result results ON results.file_id = keys.file_id
-                GROUP BY results.type, results.file_id, isMatch
-                ORDER BY
-                    isMatch DESC, hits DESC, createdate DESC
+                    inline_result.type, inline_result.file_id
+                FROM (
+                    SELECT file_id
+                    FROM
+                        inline_keyword_result
+                    WHERE keyword LIKE $1
+                    GROUP BY file_id
+                ) q JOIN inline_result ON q.file_id = inline_result.file_id
+                ORDER BY hits, createdate
                 LIMIT 50`, // telegram bot API's answerInlineQuery method does not allow more than 50 results per query.
         values: [parameter],
         //rowMode: 'array'
     });
 };
+
+exports.getMostPopular = function() {
+    return pool.query(`
+        SELECT
+            type, file_id
+        FROM
+            inline_result
+        ORDER BY hits, createdate
+        LIMIT 50
+    `); // telegram bot API's answerInlineQuery method does not allow more than 50 results per query.
+}

@@ -3,6 +3,30 @@ var database = require("../../api/database");
 
 var InlineQueryHandler = function() {};
 
+function getInlineChoicesFromDbResults(result) {
+    return result.rows.map((row) => {
+        let resultItem = {
+            type: row.type,
+            id: String(10000000 + parseInt(Math.random() * 10000000))
+        };
+        switch(row.type) {
+            case "sticker":
+                resultItem.sticker_file_id = row.file_id;
+                break;
+            case "mpeg4_gif":
+                resultItem.mpeg4_file_id = row.file_id;
+                break;
+            case "photo":
+                resultItem.photo_file_id = row.file_id;
+                break;
+            default:
+                return null;
+                break;
+        }
+        return resultItem;
+    });
+}
+
 // ReplyKeyboardMarkup example
 InlineQueryHandler.prototype.canHandle = function(update) {
     if(update && update.inline_query) {
@@ -13,35 +37,19 @@ InlineQueryHandler.prototype.canHandle = function(update) {
 
 InlineQueryHandler.prototype.handle = function(update) {
     return new Promise((resolve, reject) => {
-        database.lookupResults(update.inline_query.query.toLowerCase()).then((result) => {
-            // database lookup query always returns results, even if no match is found
-            let inlineChoices = result.rows.map((row) => {
-                let resultItem = {
-                    type: row.type,
-                    id: String(10000000 + parseInt(Math.random() * 10000000))
-                };
-                switch(row.type) {
-                    case "sticker":
-                        resultItem.sticker_file_id = row.file_id;
-                        break;
-                    case "mpeg4_gif":
-                        resultItem.mpeg4_file_id = row.file_id;
-                        break;
-                    case "photo":
-                        resultItem.photo_file_id = row.file_id;
-                        break;
-                    default:
-                        return null;
-                        break;
-                }
-                return resultItem;
-            });        
-
-            resolve(telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(inlineChoices)));
-
-        }).catch((error) => {
-            reject(error);
-        });
+        if(update.inline_query.query.trim().length == 0) {
+            database.getMostPopular().then((result) => {
+                resolve(telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(getInlineChoicesFromDbResults(result))));
+            }).catch((error) => {
+                reject(error);
+            });
+        } else {
+            database.lookupResults(update.inline_query.query.toLowerCase()).then((result) => {
+                resolve(telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(getInlineChoicesFromDbResults(result))));
+            }).catch((error) => {
+                reject(error);
+            });
+        }
     });
 };
 
