@@ -1,3 +1,4 @@
+var InlineQueryRenderHandler = require("./message-handlers/inline-query-render-handler.js");
 var InlineQueryHandler = require("./message-handlers/inline-query-handler");
 var InlineMarkupHandler = require('./message-handlers/inline-markup-handler');
 var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
@@ -7,6 +8,7 @@ var DefaultHandler = require('./message-handlers/default-handler');
 var SupahFlyBot = function() {};
 
 var messageHandlers = [
+    new InlineQueryRenderHandler(),
     new InlineQueryHandler(),
     new InlineMarkupHandler(),
     new ReplyMarkupHandler(),
