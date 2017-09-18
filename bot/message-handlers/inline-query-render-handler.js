@@ -17,20 +17,12 @@ Handler.prototype.canHandle = function(update) {
 };
 
 Handler.prototype.handle = function(update) {
-    console.log("in Handle()" + JSON.stringify(update));
-
-    console.log(">> update.inline_query.query = " + update.inline_query.query);
     
     // extract from bot inline query command text that we want to render
-    console.log(">> test: " + matchPattern.test(update.inline_query.query));
     let match = matchPattern.exec(update.inline_query.query);
 
-    match.forEach((m,i) => {
-        console.log(`matched[${i}]: ${m}`);
-    })
-
     // url of an image with a rendered text
-    let photo_url = `http://afternoon-everglades-97004.herokuapp.com/render/kit/${encodeURI(match[1])}`;
+    let photo_url = `http://afternoon-everglades-97004.herokuapp.com/render/kit/${encodeURIComponent(match[1])}`;
     return telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(
         [{
             type: "photo",
