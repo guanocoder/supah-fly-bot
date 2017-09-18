@@ -14,7 +14,10 @@ Handler.prototype.canHandle = function(update) {
 };
 
 Handler.prototype.handle = function(update) {
-    let photo_url = `http://afternoon-everglades-97004.herokuapp.com/render/kit/${encodeURI(update.inline_query.query)}`;
+    // extract from bot inline query command text that we want to render
+    let match = matchPattern.exec(update.inline_query.query);
+    // url of an image with a rendered text
+    let photo_url = `http://afternoon-everglades-97004.herokuapp.com/render/kit/${encodeURI(match[0])}`;
     return telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(
         [{
             type: "photo",
