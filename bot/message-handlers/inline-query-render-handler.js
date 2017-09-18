@@ -6,7 +6,10 @@ const matchPattern = /kit\s\"([^\"]+)\"/g;
 
 Handler.prototype.canHandle = function(update) {
     if(update && update.inline_query) {
-        return matchPattern.test(update.inline_query.query);
+        if(matchPattern.test(update.inline_query.query)) {
+            console.log(">> renderHandler can handle!");
+            return true;
+        }
     }
     return false;
 };
@@ -14,6 +17,11 @@ Handler.prototype.canHandle = function(update) {
 Handler.prototype.handle = function(update) {
     // extract from bot inline query command text that we want to render
     let match = matchPattern.exec(update.inline_query.query);
+
+    match.forEach(m,i => {
+        console.log(`matched[${i}]: ${m}`);
+    })
+
     // url of an image with a rendered text
     let photo_url = `http://afternoon-everglades-97004.herokuapp.com/render/kit/${encodeURI(match[1])}`;
     return telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(
