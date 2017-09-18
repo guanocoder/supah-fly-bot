@@ -5,6 +5,7 @@ var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var SupahFlyBot = require("./bot/supah-fly-bot.js");
+var imageTextRenderer = require("./image-text-renderer/renderer.js");
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
@@ -38,6 +39,8 @@ app.post(`/${botToken}`, (request, response) => {
 app.get('/getUpdates', (request, response) => {
     response.json(updates);
 });
+
+app.use('/render', imageTextRenderer);
 
 // render static content from www folder
 app.use(express.static('www'));
