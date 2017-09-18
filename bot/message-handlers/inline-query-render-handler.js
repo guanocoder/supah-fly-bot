@@ -24,8 +24,7 @@ Handler.prototype.handle = function(update) {
     // extract from bot inline query command text that we want to render
     let match = matchPattern.exec(update.inline_query.query);
 
-
-    match.forEach(m,i => {
+    match.forEach((m,i) => {
         console.log(`matched[${i}]: ${m}`);
     })
 
