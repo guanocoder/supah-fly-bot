@@ -2,7 +2,7 @@ var telegram = require("../../api/telegram");
 
 var Handler = function() {};
 
-const matchPattern = /kit\s\"([^\"]+)\"/g;
+const matchPattern = /kit\s\"([^\"]+)\"/;
 
 Handler.prototype.canHandle = function(update) {
     console.log("in canHandle()" + JSON.stringify(update));
@@ -22,6 +22,7 @@ Handler.prototype.handle = function(update) {
     console.log(">> update.inline_query.query = " + update.inline_query.query);
     
     // extract from bot inline query command text that we want to render
+    console.log(">> test: " + matchPattern.test(update.inline_query.query));
     let match = matchPattern.exec(update.inline_query.query);
 
     match.forEach((m,i) => {
