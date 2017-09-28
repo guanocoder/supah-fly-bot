@@ -7,7 +7,7 @@ function getInlineChoicesFromDbResults(result) {
     return result.rows.map((row) => {
         let resultItem = {
             type: row.type,
-            id: String(10000000 + parseInt(Math.random() * 10000000))
+            id: row.file_id
         };
         switch(row.type) {
             case "sticker":

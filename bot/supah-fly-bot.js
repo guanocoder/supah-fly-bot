@@ -3,7 +3,7 @@ var InlineQueryHandler = require("./message-handlers/inline-query-handler");
 var InlineMarkupHandler = require('./message-handlers/inline-markup-handler');
 var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
 var InputHandler = require('./message-handlers/input-handler');
-var HitHandler = require('./message-handlers/hit-handler');
+var ChosenInlineResultHandler = require('./message-handlers/chosen-inline-result-handler');
 var DefaultHandler = require('./message-handlers/default-handler');
 var SupahFlyBot = function() {};
 
@@ -13,7 +13,7 @@ var messageHandlers = [
     new InlineMarkupHandler(),
     new ReplyMarkupHandler(),
     new InputHandler(),
-    new HitHandler(),
+    new ChosenInlineResultHandler(),
     new DefaultHandler()
 ];
 // Process telegram update brought through bot webhook
