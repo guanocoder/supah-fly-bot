@@ -22,13 +22,16 @@ Handler.prototype.handle = function(update) {
     let match = matchPattern.exec(update.inline_query.query);
 
     // url of an image with a rendered text
-    let photo_url = `http://afternoon-everglades-97004.herokuapp.com/render/kit/${encodeURIComponent(match[1])}`;
+    // TODO: find out how to get this URL from server context
+    let serviceUrl = "http://afternoon-everglades-97004.herokuapp.com";
+    let photo_url = `${serviceUrl}/render/kit/${encodeURIComponent(match[1])}`;
+    let thumb_url = `${serviceUrl}/render/thumb/kit/${encodeURIComponent(match[1])}`;
     return telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(
         [{
             type: "photo",
             id: String(10000000 + parseInt(Math.random() * 10000000)),
             photo_url: photo_url,
-            thumb_url: photo_url
+            thumb_url: thumb_url
         }]
     ));
 };
