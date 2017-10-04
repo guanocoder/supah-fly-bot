@@ -10,6 +10,13 @@ router.imageSet = {
         fontFile: "verdana.fnt",
         textPoint: { x: 150, y: 82 },
         textWidth: 148,
+    },
+    "idea" : {
+        imageFile: "idea.jpg",
+        mimeType: jimp.MIME_JPEG,
+        fontFile: "arial_white.fnt",
+        textPoint: { x: 260, y: 90 },
+        textWidth: 180,
     }
 };
 
