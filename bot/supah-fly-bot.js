@@ -7,20 +7,21 @@ var ChosenInlineResultHandler = require('./message-handlers/chosen-inline-result
 var DefaultHandler = require('./message-handlers/default-handler');
 
 let renderImageSettings = [];
+let messageHandlers = [];
 
 var SupahFlyBot = function(imageSet) {
     renderImageSettings = imageSet
+    messageHandlers = [
+        new InlineQueryRenderHandler(),
+        new InlineQueryHandler(renderImageSettings),
+        new InlineMarkupHandler(),
+        new ReplyMarkupHandler(),
+        new InputHandler(),
+        new ChosenInlineResultHandler(),
+        new DefaultHandler()
+    ];
 };
 
-var messageHandlers = [
-    new InlineQueryRenderHandler(),
-    new InlineQueryHandler(renderImageSettings),
-    new InlineMarkupHandler(),
-    new ReplyMarkupHandler(),
-    new InputHandler(),
-    new ChosenInlineResultHandler(),
-    new DefaultHandler()
-];
 // Process telegram update brought through bot webhook
 SupahFlyBot.prototype.process = function(update) {
     return new Promise((resolve, reject) => {

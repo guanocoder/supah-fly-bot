@@ -16,7 +16,7 @@ var updates = [];
 
 // for local testing purposes
 app.post('/test', (request, response) => {
-    var bot = new SupahFlyBot();
+    var bot = new SupahFlyBot(imageTextRenderer.imageSet);
     bot.process(request.body)
     .catch(error => {
         console.log("Error: " + error);

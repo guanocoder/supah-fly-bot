@@ -4,12 +4,9 @@ var Handler = function() {};
 
 const matchPattern = /kit\s\"([^\"]+)\"/;
 
-Handler.prototype.canHandle = function(update) {
-    console.log("in canHandle()" + JSON.stringify(update));
-    
+Handler.prototype.canHandle = function(update) {   
     if(update && update.inline_query) {
         if(matchPattern.test(update.inline_query.query)) {
-            console.log(">> renderHandler can handle!");
             return true;
         }
     }
