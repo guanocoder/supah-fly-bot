@@ -32,7 +32,7 @@ exports.addKeywordResult = function(keyword, fileId) {
     });
 };
 
-exports.lookupResults = function(keyword) {
+exports.lookupResults = function(keyword, count) {
     let parameter = (typeof(keyword) == 'string') ? `%${keyword.toLowerCase()}%` : '';
     return pool.query({
         // sort by popularity and then by creation date
@@ -46,8 +46,8 @@ exports.lookupResults = function(keyword) {
                     GROUP BY file_id
                 ) q JOIN inline_result ON q.file_id = inline_result.file_id
                 ORDER BY hits DESC, createdate DESC
-                LIMIT 50`, // telegram bot API's answerInlineQuery method does not allow more than 50 results per query.
-        values: [parameter],
+                LIMIT $2`, // telegram bot API's answerInlineQuery method does not allow more than 50 results per query.
+        values: [parameter, count],
         //rowMode: 'array'
     });
 };

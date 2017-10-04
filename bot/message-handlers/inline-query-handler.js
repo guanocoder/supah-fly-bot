@@ -48,13 +48,12 @@ InlineQueryHandler.prototype.handle = function(update) {
                 reject(error);
             });
         } else {
-            database.lookupResults(update.inline_query.query.toLowerCase()).then((result) => {
+            let imageRenderResults = getTextRenderResults(update.inline_query.query)
+            // 50 is Telegrams limit for inline query results
+            let rowCount = 50 - imageRenderResults.length;
+            database.lookupResults(update.inline_query.query.toLowerCase(), rowCount).then((result) => {
                 resolve(telegram.answerInlineQuery(update.inline_query.id,
-                    JSON.stringify(
-                        getTextRenderResults(update.inline_query.query.toLowerCase()).concat(
-                            getInlineChoicesFromDbResults(result)
-                        )
-                    )
+                    JSON.stringify(imageRenderResults.concat(getInlineChoicesFromDbResults(result)))
                 ));
             }).catch((error) => {
                 reject(error);
