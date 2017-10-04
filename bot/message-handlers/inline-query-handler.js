@@ -1,7 +1,11 @@
 var telegram = require("../../api/telegram");
 var database = require("../../api/database");
 
-var InlineQueryHandler = function() {};
+let renderImageSettings = [];
+
+var InlineQueryHandler = function(imageSet) {
+    renderImageSettings = imageSet
+};
 
 function getInlineChoicesFromDbResults(result) {
     return result.rows.map((row) => {
@@ -45,12 +49,31 @@ InlineQueryHandler.prototype.handle = function(update) {
             });
         } else {
             database.lookupResults(update.inline_query.query.toLowerCase()).then((result) => {
-                resolve(telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(getInlineChoicesFromDbResults(result))));
+                resolve(telegram.answerInlineQuery(update.inline_query.id,
+                    JSON.stringify(
+                        getTextRenderResults(update.inline_query.query.toLowerCase()).concat(
+                            getInlineChoicesFromDbResults(result)
+                        )
+                    )
+                ));
             }).catch((error) => {
                 reject(error);
             });
         }
     });
 };
+
+function getTextRenderResults(text) {
+    // TODO: find out how to get this URL from server context
+    let serviceUrl = "http://afternoon-everglades-97004.herokuapp.com";
+    return Object.keys(renderImageSettings).map(imageKey => {
+        return {
+            type: "photo",
+            id: String(10000000 + parseInt(Math.random() * 10000000)),
+            photo_url: `${serviceUrl}/render/${imageKey}/${text}`,
+            thumb_url: `${serviceUrl}/render/thumb/${imageKey}/${text}`
+        };
+    });
+}
 
 module.exports = InlineQueryHandler;

@@ -5,11 +5,16 @@ var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
 var InputHandler = require('./message-handlers/input-handler');
 var ChosenInlineResultHandler = require('./message-handlers/chosen-inline-result-handler');
 var DefaultHandler = require('./message-handlers/default-handler');
-var SupahFlyBot = function() {};
+
+let renderImageSettings = [];
+
+var SupahFlyBot = function(imageSet) {
+    renderImageSettings = imageSet
+};
 
 var messageHandlers = [
     new InlineQueryRenderHandler(),
-    new InlineQueryHandler(),
+    new InlineQueryHandler(renderImageSettings),
     new InlineMarkupHandler(),
     new ReplyMarkupHandler(),
     new InputHandler(),

@@ -27,7 +27,7 @@ app.post('/test', (request, response) => {
 // handle telegram webhook requests that supply bot with updates
 app.post(`/${botToken}`, (request, response) => {
     updates.push(request.body);
-    var bot = new SupahFlyBot();
+    var bot = new SupahFlyBot(imageTextRenderer.imageSet);
     bot.process(request.body)
     .catch(error => {
         console.log("Error: " + error);
