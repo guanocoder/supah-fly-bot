@@ -3,6 +3,9 @@ var router = express.Router();
 
 const jimp = require('jimp');
 
+const imageCache = {};
+const fontCache = {};
+
 router.imageSet = {
     "kit" : {
         imageFile: "kit.jpg",
@@ -20,12 +23,12 @@ router.imageSet = {
     }
 };
 
-function renderImageWithText(response, properties, text, asThumb) {
+function renderImageWithText(response, imageKey, text, asThumb) {
+    let properties = router.imageSet[imageKey];
     let loadedImage = null;
-    jimp.read(`./image-text-renderer/${properties.imageFile}`)
-    .then(image => {
+    getImage(properties.imageFile).then(image => {
         loadedImage = image;
-        return jimp.loadFont(`./image-text-renderer/${properties.fontFile}`);        
+        return getFont(properties.fontFile);        
     })
     .then(font => {
         // write text on the image
@@ -45,6 +48,43 @@ function renderImageWithText(response, properties, text, asThumb) {
     });        
 }
 
+function getImage(fileName) {
+    return new Promise((resolve, reject) => {
+        if(imageCache[fileName]) {
+            resolve(imageCache[fileName].clone());
+        } else {
+            // Load image
+            console.log("Image loaded from file: " + fileName);
+            jimp.read(`./image-text-renderer/${fileName}`).then(image => {
+                imageCache[fileName] = image;
+                resolve(image.clone());
+            }).catch(reject);
+        }
+    });
+}
+
+function getFont(fileName) {
+    return new Promise((resolve, reject) => {
+        if(fontCache[fileName]) {
+            resolve(fontCache[fileName]);
+        } else {
+            // Load font
+            console.log("Font loaded from file: " + fileName);
+            jimp.loadFont(`./image-text-renderer/${fileName}`).then(font => {
+                fontCache[fileName] = font;
+                resolve(font);
+            }).catch(reject);
+        }
+    });
+}
+
+// preload images & fonts without doing anything with them
+for(let key in router.imageSet) {
+    let properties = router.imageSet[key];
+    getImage(properties.imageFile);
+    getFont(properties.fontFile);
+}
+
 function resizeMaintainingAspectRatio(image, targetHeight) {
     let originalWidth = image.bitmap.width;
     let originalHeight = image.bitmap.height;
@@ -55,7 +95,7 @@ function resizeMaintainingAspectRatio(image, targetHeight) {
 router.get('/thumb/:image/:text', (request, response) => {
     let imageKey = request.params.image;
     if(imageKey in router.imageSet) {
-        renderImageWithText(response, router.imageSet[imageKey], request.params.text, true);
+        renderImageWithText(response, imageKey, request.params.text, true);
     } else {
         response.statusCode = 404;
         response.send("Requested resource not found!");
@@ -65,7 +105,7 @@ router.get('/thumb/:image/:text', (request, response) => {
 router.get('/:image/:text', (request, response) => {
     let imageKey = request.params.image;
     if(imageKey in router.imageSet) {
-        renderImageWithText(response, router.imageSet[imageKey], request.params.text, false);
+        renderImageWithText(response, imageKey, request.params.text, false);
     } else {
         response.statusCode = 404;
         response.send("Requested resource not found!");
