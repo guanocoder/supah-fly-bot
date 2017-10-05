@@ -34,7 +34,7 @@ function renderImageWithText(response, imageKey, text, asThumb) {
         // write text on the image
         loadedImage.print(font, properties.textPoint.x, properties.textPoint.y, text, properties.textWidth);
         if(asThumb) {
-            resizeMaintainingAspectRatio(loadedImage, 100);
+            resizeMaintainingAspectRatio(loadedImage, 300);
         }
         // output image to response
         loadedImage.getBuffer(properties.mimeType, (error, buffer) => {
