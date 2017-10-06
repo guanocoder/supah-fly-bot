@@ -9,6 +9,8 @@ const fontCache = {};
 router.imageSet = {
     "kit" : {
         imageFile: "kit.jpg",
+        imageHeight: 308,
+        imageWidth: 308,
         mimeType: jimp.MIME_JPEG,
         fontFile: "verdana.fnt",
         textPoint: { x: 150, y: 82 },
@@ -16,6 +18,8 @@ router.imageSet = {
     },
     "idea" : {
         imageFile: "idea.jpg",
+        imageHeight: 447,
+        imageWidth: 447,
         mimeType: jimp.MIME_JPEG,
         fontFile: "arial_white.fnt",
         textPoint: { x: 260, y: 90 },
