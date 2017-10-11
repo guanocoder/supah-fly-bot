@@ -52,4 +52,9 @@ app.get('*', (request, response) => {
 // start this whole thing up
 app.listen(port, () => {
     console.log("Supah fly bot listening...");
+    // Telegram inline query request times out when bot is sleeping and needs to wake up
+    // so I am trying to cut waking delay by postponing resource preloading for the image renderer
+    setTimeout(() => {
+        imageTextRenderer.preload();
+    }, 100)
 });

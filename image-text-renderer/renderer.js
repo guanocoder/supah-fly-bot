@@ -82,18 +82,20 @@ function getFont(fileName) {
     });
 }
 
-// preload images & fonts without doing anything with them
-for(let key in router.imageSet) {
-    let properties = router.imageSet[key];
-    getImage(properties.imageFile);
-    getFont(properties.fontFile);
-}
-
 function resizeMaintainingAspectRatio(image, targetHeight) {
     let originalWidth = image.bitmap.width;
     let originalHeight = image.bitmap.height;
     let targetWidth = Math.round(originalWidth * (targetHeight / originalHeight));
     image.resize(targetWidth, targetHeight);
+}
+
+// preload images & fonts without doing anything with them
+router.preload = function() {
+    for(let key in router.imageSet) {
+        let properties = router.imageSet[key];
+        getImage(properties.imageFile);
+        getFont(properties.fontFile);
+    }
 }
 
 router.get('/thumb/:image/:text', (request, response) => {
