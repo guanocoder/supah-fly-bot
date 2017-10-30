@@ -23,7 +23,7 @@ Handler.prototype.handle = function(update) {
     console.log(`File ID: ${fileId} chat ID: ${chatId}`);
 
     return telegram.getFile(fileId).then(response => {
-        console.log("Telegram's getFile responded: " + JSON.stringify(result));
+        console.log("Telegram's getFile responded: " + JSON.stringify(response));
         if(response.file_path) {
             console.log("FilePath: " + response.file_path);
             let sourceImageUrl = telegram.getFileUrl(response.file_path);
