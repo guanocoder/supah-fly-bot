@@ -4,6 +4,7 @@ var InlineMarkupHandler = require('./message-handlers/inline-markup-handler');
 var ReplyMarkupHandler = require('./message-handlers/reply-markup-handler');
 var InputHandler = require('./message-handlers/input-handler');
 var ChosenInlineResultHandler = require('./message-handlers/chosen-inline-result-handler');
+var OmfgHandler = require('./message-handlers/omfg-handler');
 var DefaultHandler = require('./message-handlers/default-handler');
 
 let renderImageSettings = [];
@@ -18,6 +19,7 @@ var SupahFlyBot = function(imageSet) {
         new ReplyMarkupHandler(),
         new InputHandler(),
         new ChosenInlineResultHandler(),
+        new OmfgHandler(),
         new DefaultHandler()
     ];
 };

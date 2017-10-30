@@ -23,6 +23,24 @@ exports.sendMessage = function(chatId, text, replyToMessageId, replyMarkup) {
     });
 };
 
+exports.sendPhoto = function(chatId, photoUrl) {
+    return new Promise((resolve, reject) => {
+        requestModule.post({
+            url: `https://api.telegram.org/bot${botToken}/sendPhoto`,
+            form: {
+                chat_id: chatId,
+                photo: photoUrl // TODO: maybe I should try posting the photo itself as multipart/form xxx-whatever
+            }
+        }, (error, response, body) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+}
+
 exports.sendChatAction = function(chatId, action) {
     return new Promise((resolve, reject) => {
         requestModule.post({
