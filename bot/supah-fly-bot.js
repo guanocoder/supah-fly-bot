@@ -10,8 +10,8 @@ var DefaultHandler = require('./message-handlers/default-handler');
 let renderImageSettings = [];
 let messageHandlers = [];
 
-var SupahFlyBot = function(imageSet) {
-    renderImageSettings = imageSet
+var SupahFlyBot = function(imageRenderer) {
+    renderImageSettings = imageRenderer.imageSet
     messageHandlers = [
         new InlineQueryRenderHandler(),
         new InlineQueryHandler(renderImageSettings),
@@ -19,7 +19,7 @@ var SupahFlyBot = function(imageSet) {
         new ReplyMarkupHandler(),
         new InputHandler(),
         new ChosenInlineResultHandler(),
-        new OmfgHandler(),
+        new OmfgHandler(imageRenderer),
         new DefaultHandler()
     ];
 };

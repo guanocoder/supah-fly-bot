@@ -27,7 +27,7 @@ exports.sendPhoto = function(chatId, photoUrl) {
     return new Promise((resolve, reject) => {
         requestModule.post({
             url: `https://api.telegram.org/bot${botToken}/sendPhoto`,
-            form: {
+            formData: {
                 chat_id: chatId,
                 photo: photoUrl // TODO: maybe I should try posting the photo itself as multipart/form xxx-whatever
             }
@@ -39,6 +39,27 @@ exports.sendPhoto = function(chatId, photoUrl) {
             }
         });
     });
+}
+
+exports.getFile = function(fileId) {
+    return new Promise((resolve, reject) => {
+        requestModule.post({
+            url: `https://api.telegram.org/bot${botToken}/getFile`,
+            form: {
+                file_id: fileId,
+            }
+        }, (error, response, body) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+}
+
+exports.getFileUrl = function(filePath) {
+    return `https://api.telegram.org/file/bot${botToken}/${filePath}`;
 }
 
 exports.sendChatAction = function(chatId, action) {

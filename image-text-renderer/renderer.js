@@ -1,6 +1,8 @@
 var express = require('express')
 var router = express.Router();
 
+var telegram = require("../api/telegram");
+
 const jimp = require('jimp');
 
 const imageCache = {};
@@ -26,6 +28,26 @@ router.imageSet = {
         textWidth: 180,
     }
 };
+
+router.renderOmfgCover = function(chatId, sourceImageUrl) {
+    jimp.read(`./image-text-renderer/cannotunsee.jpg`).then(targetImage => {
+        return jimp.read(sourceImageUrl).then(sourceImage => {
+            sourceImage.scaleToFit(150, 162, jimp.AUTO);
+            let xtraSpaceOnY = (162 - sourceImage.bitmap.height) / 2; 
+            targetImage.composite(sourceImage, 150, xtraSpaceOnY);
+            // TODO: I could not post buffer... thus this awkward crap is here which can be easily broken by multiple users
+            targetImage.write('./image-text-renderer/cannotunsee_temp.jpg', () => {
+                telegram.sendPhoto(chatId, require('fs').createReadStream(__dirname + '/cannotunsee_temp.jpg')).then(result => {
+                    console.log("sent photo via telgram: statusCode=" + result.statusCode);
+                }).catch(error => {
+                    console.log("Error sending telegram photo: " + error);
+                })
+            })
+        });
+    }).catch(error => {
+        console.log("Error while rendering OMFG cover: " + error);
+    });
+}
 
 function renderImageWithText(response, imageKey, text, asThumb) {
     let properties = router.imageSet[imageKey];

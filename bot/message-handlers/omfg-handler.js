@@ -1,6 +1,10 @@
 var telegram = require("../../api/telegram");
 
-var Handler = function() {};
+let imageRenderer = null;
+
+var Handler = function(renderer) {
+    imageRenderer = renderer;
+};
 
 Handler.prototype.canHandle = function(update) {
     if(update && update.message && update.message.photo) {
@@ -10,7 +14,15 @@ Handler.prototype.canHandle = function(update) {
 }
 
 Handler.prototype.handle = function(update) {
-    return telegram.sendPhoto(update.message.chat.id, "http://people.sc.fsu.edu/~jburkardt/data/png/baboon.png");
+    let fileId = update.message.photo.slice(-1).pop().file_id;
+    let chatId = update.message.chat.id;
+
+    return telegram.getFile(fileId).then(response => {
+        if(response.file_path) {
+            let sourceImageUrl = telegram.getFileUrl(response.file_path);
+            renderer.renderOmfgCover(chatId, sourceImageUrl);
+        }
+    });
 }
 
 module.exports = Handler;
