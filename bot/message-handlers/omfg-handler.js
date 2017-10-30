@@ -27,7 +27,7 @@ Handler.prototype.handle = function(update) {
         if(response.file_path) {
             console.log("FilePath: " + response.file_path);
             let sourceImageUrl = telegram.getFileUrl(response.file_path);
-            renderer.renderOmfgCover(chatId, sourceImageUrl);
+            imageRenderer.renderOmfgCover(chatId, sourceImageUrl);
         }
     });
 }
