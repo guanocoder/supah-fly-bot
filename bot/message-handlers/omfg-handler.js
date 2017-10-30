@@ -14,11 +14,18 @@ Handler.prototype.canHandle = function(update) {
 }
 
 Handler.prototype.handle = function(update) {
+
+    console.log("Handling telegram update: " + JSON.stringify(update));
+
     let fileId = update.message.photo.slice(-1).pop().file_id;
     let chatId = update.message.chat.id;
 
+    console.log(`File ID: ${fileId} chat ID: ${chatId}`);
+
     return telegram.getFile(fileId).then(response => {
+        console.log("Telegram's getFile responded: " + JSON.stringify(result));
         if(response.file_path) {
+            console.log("FilePath: " + response.file_path);
             let sourceImageUrl = telegram.getFileUrl(response.file_path);
             renderer.renderOmfgCover(chatId, sourceImageUrl);
         }

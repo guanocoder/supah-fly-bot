@@ -30,6 +30,7 @@ router.imageSet = {
 };
 
 router.renderOmfgCover = function(chatId, sourceImageUrl) {
+    console.log("Rendering OMFG cover with params chatId:" + chatId + " and imageUrl:" + sourceImageUrl);
     jimp.read(`./image-text-renderer/cannotunsee.jpg`).then(targetImage => {
         return jimp.read(sourceImageUrl).then(sourceImage => {
             sourceImage.scaleToFit(150, 162, jimp.AUTO);
