@@ -52,7 +52,16 @@ exports.getFile = function(fileId) {
             if(error) {
                 reject(error);
             } else {
-                resolve(response);
+                if(response.statusCode == 200) {
+                    let body = JSON.parse(response.body);
+                    if(body.ok) {
+                        resolve(body.result);
+                    } else {
+                        reject("Error: Telegram responded with body.ok = " + body.ok + ": " + JSON.stringify(response));
+                    }
+                } else {
+                    reject("Error: Telegram responded with statusCode " + response.statusCode + ": " + JSON.stringify(response));
+                }
             }
         });
     });
