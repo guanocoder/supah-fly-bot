@@ -23,13 +23,16 @@ exports.sendMessage = function(chatId, text, replyToMessageId, replyMarkup) {
     });
 };
 
-exports.sendPhoto = function(chatId, photoUrl) {
+exports.sendPhoto = function(chatId, photo, options) {
     return new Promise((resolve, reject) => {
         requestModule.post({
             url: `https://api.telegram.org/bot${botToken}/sendPhoto`,
             formData: {
                 chat_id: chatId,
-                photo: photoUrl // TODO: maybe I should try posting the photo itself as multipart/form xxx-whatever
+                photo: {
+                    value: photo,
+                    options: options
+                }
             }
         }, (error, response, body) => {
             if(error) {

@@ -30,16 +30,17 @@ router.imageSet = {
 };
 
 router.renderOmfgCover = function(chatId, sourceImageUrl) {
-    console.log("Rendering OMFG cover with params chatId:" + chatId + " and imageUrl:" + sourceImageUrl);
     jimp.read(`./image-text-renderer/cannotunsee.jpg`).then(targetImage => {
         return jimp.read(sourceImageUrl).then(sourceImage => {
             sourceImage.scaleToFit(150, 162, jimp.AUTO);
             let xtraSpaceOnY = (162 - sourceImage.bitmap.height) / 2; 
+            // draw source image inside Omfg jpeg frame
             targetImage.composite(sourceImage, 150, xtraSpaceOnY);
-            // TODO: I could not post buffer... thus this awkward crap is here which can be easily broken by multiple users
-            targetImage.write('./image-text-renderer/cannotunsee_temp.jpg', () => {
-                telegram.sendPhoto(chatId, require('fs').createReadStream(__dirname + '/cannotunsee_temp.jpg')).then(result => {
-                    console.log("sent photo via telgram: statusCode=" + result.statusCode);
+            targetImage.getBuffer(jimp.MIME_JPEG, (error, buffer) => {
+                // send via telegram as buffer, with options for the photo field in multipart-form 
+                // specifying file options is necessary otherwise telegram will give '413 Payload Too Large' error
+                telegram.sendPhoto(chatId, buffer, { filename: "cannotunsee.jpg", contentType: jimp.MIME_JPEG }).then(result => {
+                    //console.log("sent photo via telgram: statusCode=" + result.statusCode);
                 }).catch(error => {
                     console.log("Error sending telegram photo: " + error);
                 })
