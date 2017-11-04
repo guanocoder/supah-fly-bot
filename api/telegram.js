@@ -44,6 +44,48 @@ exports.sendPhoto = function(chatId, photo, options) {
     });
 }
 
+exports.sendDocument = function(chatId, document, options) {
+    return new Promise((resolve, reject) => {
+        requestModule.post({
+            url: `https://api.telegram.org/bot${botToken}/sendDocument`,
+            formData: {
+                chat_id: chatId,
+                document: {
+                    value: document,
+                    options: options
+                }
+            }
+        }, (error, response, body) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+}
+
+exports.sendSticker = function(chatId, sticker, options) {
+    return new Promise((resolve, reject) => {
+        requestModule.post({
+            url: `https://api.telegram.org/bot${botToken}/sendSticker`,
+            formData: {
+                chat_id: chatId,
+                sticker: {
+                    value: sticker,
+                    options: options
+                }
+            }
+        }, (error, response, body) => {
+            if(error) {
+                reject(error);
+            } else {
+                resolve(response);
+            }
+        });
+    });
+}
+
 exports.getFile = function(fileId) {
     return new Promise((resolve, reject) => {
         requestModule.post({

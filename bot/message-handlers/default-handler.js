@@ -32,9 +32,30 @@ DefaultHandler.prototype.handle = function(update) {
             }).then(() => {
                 return simulateUserDelay(5000, 3000);
             }).then(() => {
-                return telegram.sendMessage(update.message.chat.id, "заткнись! мой хероку длиннее твоего!", update.message.message_id, 
-                    JSON.stringify({ hide_keyboard: true })
-                );
+                // return telegram.sendMessage(update.message.chat.id, "заткнись! мой хероку длиннее твоего!", update.message.message_id, 
+                //     JSON.stringify({ hide_keyboard: true })
+                // );
+                return database.lookupResults("stfu", 50).then(results => {
+                    let index = parseInt(Math.random() * results.rows.length);
+                    return results.rows[index];
+                });
+            }).then(resultRow => {
+                let sendMethod = null;
+                switch(resultRow.type) {
+                    case "sticker":
+                        sendMethod = telegram.sendSticker;
+                        break;
+                    case "mpeg4_gif":
+                        sendMethod = telegram.sendDocument;
+                        break;
+                    case "photo":
+                        sendMethod = telegram.sendPhoto;
+                        break;
+                    default:
+                        return reject("Have no idea how to send selected result from the database.")
+                        break;
+                }
+                return sendMethod.call(telegram, update.message.chat.id, resultRow.file_id);
             })
         );
     });
