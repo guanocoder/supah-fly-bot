@@ -1,4 +1,5 @@
 var telegram = require("../../api/telegram");
+var database = require("../../api/database");
 
 var DefaultHandler = function() {};
 
