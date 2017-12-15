@@ -22,12 +22,10 @@ Handler.prototype.handle = function(update) {
     let message = update.message || update.edited_message;
     let result = "";
     try {
-        console.log(">>> before executing");
-        result = eval(message.text.substring(5));
-        console.log(">>> after executing");
+        result = String(eval(message.text.substring(5)));
     } catch(error) {
         console.log(">>> in catch block");
-        result = error.toString();
+        result = String(error);
     }
     console.log(">>> result.length = " + result.length);    
     return telegram.sendMessage(message.chat.id, result, (update.edited_message) ? update.edited_message.message_id : undefined)
