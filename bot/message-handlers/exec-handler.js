@@ -24,14 +24,11 @@ Handler.prototype.handle = function(update) {
     try {
         result = String(eval(message.text.substring(5)));
     } catch(error) {
-        console.log(">>> in catch block");
         result = String(error);
     }
-    console.log(">>> result.length = " + result.length);    
     return telegram.sendMessage(message.chat.id, result, (update.edited_message) ? update.edited_message.message_id : undefined)
         .catch(error => {
-            console.log(">>> caught an error");
-            console.log("Error: could not send /exec response via telegram sendMessage() - " + result)
+            console.log("Error: could not send /exec response via telegram sendMessage() - " + error)
         });
 }
 
