@@ -15,7 +15,7 @@ Handler.prototype.handle = function(update) {
     try {
         result = eval(update.message.text.substring(6));
     } catch(error) {
-        result = error;
+        result = error.toString();
     }
     return telegram.sendMessage(update.message.chat.id, result);
 }
