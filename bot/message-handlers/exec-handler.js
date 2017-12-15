@@ -4,8 +4,15 @@ var database = require("../../api/database");
 var Handler = function() {};
 
 Handler.prototype.canHandle = function(update) {
-    if(update && update.message && update.message.text.toLowerCase().startsWith("/exec ")) {
-        return true;
+    if(update && update.message && update.message.text && update.message.text.toLowerCase().startsWith("/exec ")) {
+        if(update.message.from && update.message.from.id && process.env.USERS_EXEC_PERMISSION) {
+            let allowed_users = process.env.USERS_EXEC_PERMISSION.split(",");
+            for(let index in allowed_users) {
+                if(update.message.from.id == allowed_users[index]) {
+                    return true;
+                }
+            }
+        }
     }
     return false;
 }
