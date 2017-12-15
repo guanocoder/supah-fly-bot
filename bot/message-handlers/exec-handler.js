@@ -4,11 +4,12 @@ var database = require("../../api/database");
 var Handler = function() {};
 
 Handler.prototype.canHandle = function(update) {
-    if(update && update.message && update.message.text && update.message.text.toLowerCase().startsWith("/exec ")) {
-        if(update.message.from && update.message.from.id && process.env.USERS_EXEC_PERMISSION) {
+    let message = update.message || update.edited_message;
+    if(message && message.text && message.text.toLowerCase().startsWith("/exec ")) {
+        if(message.from && message.from.id && process.env.USERS_EXEC_PERMISSION) {
             let allowed_users = process.env.USERS_EXEC_PERMISSION.split(",");
             for(let index in allowed_users) {
-                if(update.message.from.id == allowed_users[index]) {
+                if(message.from.id == allowed_users[index]) {
                     return true;
                 }
             }
@@ -18,13 +19,14 @@ Handler.prototype.canHandle = function(update) {
 }
 
 Handler.prototype.handle = function(update) {
+    let message = update.message || update.edited_message;
     let result = "";
     try {
-        result = eval(update.message.text.substring(6));
+        result = eval(message.text.substring(6));
     } catch(error) {
         result = error.toString();
     }
-    return telegram.sendMessage(update.message.chat.id, result);
+    return telegram.sendMessage(message.chat.id, result, (update.edited_message) ? update.edited_message.message_id : undefined);
 }
 
 module.exports = Handler;
