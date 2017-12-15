@@ -15,6 +15,7 @@ exports.sendMessage = function(chatId, text, replyToMessageId, replyMarkup) {
             }
         }, (error, response, body) => {
             if(error) {
+                console.log("Telegram sendMessage() error: " + JSON.stringify(error));
                 reject(error);
             } else {
                 resolve(response);
