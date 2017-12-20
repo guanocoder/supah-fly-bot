@@ -3,6 +3,8 @@ var database = require("../../api/database");
 
 var Handler = function() {};
 
+Handler.__systemConsole = console;
+
 Handler.prototype.canHandle = function(update) {
     let message = update.message || update.edited_message;
     if(message && message.text && message.text.toLowerCase().startsWith("/exec")) {
@@ -23,7 +25,7 @@ Handler.prototype.handle = function(update) {
     let message = update.message || update.edited_message;
     
     function TelegramConsoleImitation() {
-        var loggedLines = [];
+        let loggedLines = [];
         return {
             anythingLogged: function() {
                 return loggedLines.length > 0;
@@ -43,7 +45,6 @@ Handler.prototype.handle = function(update) {
     
     // '__' - prefix to minimize name conflict probability with whatever code that is about to be eval()-uated
     let __result = "";
-    let __systemConsole = console;
     let console = new TelegramConsoleImitation();
     try {
         __result = String(eval(message.text.substring(5)));
@@ -56,7 +57,7 @@ Handler.prototype.handle = function(update) {
             (console.anythingLogged()) ? console.toString() : __result,
             (update.edited_message) ? update.edited_message.message_id : undefined, undefined, "HTML"
         ).catch(error => {
-            __systemConsole.log("Error: could not send /exec response via telegram sendMessage() - " + error)
+            this.__systemConsole.log("Error: could not send /exec response via telegram sendMessage() - " + error)
         });
 }
 
