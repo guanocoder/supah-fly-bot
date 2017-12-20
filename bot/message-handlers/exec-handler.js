@@ -53,7 +53,7 @@ Handler.prototype.handle = function(update) {
     __result = `<code>${__result}</code>`;
     return telegram.sendMessage(
             message.chat.id,
-            (console.anythingLogged) ? console.toString() : __result,
+            (console.anythingLogged()) ? console.toString() : __result,
             (update.edited_message) ? update.edited_message.message_id : undefined, undefined, "HTML"
         ).catch(error => {
             __systemConsole.log("Error: could not send /exec response via telegram sendMessage() - " + error)
