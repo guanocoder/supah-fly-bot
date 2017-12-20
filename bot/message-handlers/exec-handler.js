@@ -19,17 +19,44 @@ Handler.prototype.canHandle = function(update) {
 }
 
 Handler.prototype.handle = function(update) {
+
     let message = update.message || update.edited_message;
-    let result = "";
-    try {
-        result = String(eval(message.text.substring(5)));
-    } catch(error) {
-        result = String(error);
+    
+    function TelegramConsoleImitation() {
+        var loggedLines = [];
+        return {
+            anythingLogged: function() {
+                return loggedLines.length > 0;
+            },
+            log: function(anything) {
+                loggedLines.push(`<code>${anything}</code>`);
+            },
+            toString: function() {
+                return loggedLines.join("\n");
+            }
+        }
     }
-    result = `<code>${result}</code>`;
-    return telegram.sendMessage(message.chat.id, result, (update.edited_message) ? update.edited_message.message_id : undefined, undefined, "HTML")
-        .catch(error => {
-            console.log("Error: could not send /exec response via telegram sendMessage() - " + error)
+
+    function sendMessage(messageText) {
+        return telegram.sendMessage(message.chat.id, messageText);
+    }
+    
+    // '__' - prefix to minimize name conflict probability with whatever code that is about to be eval()-uated
+    let __result = "";
+    let __systemConsole = console;
+    let console = new TelegramConsoleImitation();
+    try {
+        __result = String(eval(message.text.substring(5)));
+    } catch(error) {
+        __result = String(error);
+    }
+    __result = `<code>${__result}</code>`;
+    return telegram.sendMessage(
+            message.chat.id,
+            (console.anythingLogged) ? console.toString() : __result,
+            (update.edited_message) ? update.edited_message.message_id : undefined, undefined, "HTML"
+        ).catch(error => {
+            __systemConsole.log("Error: could not send /exec response via telegram sendMessage() - " + error)
         });
 }
 
