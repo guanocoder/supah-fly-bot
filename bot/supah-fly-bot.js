@@ -11,7 +11,7 @@ var ExecHandler = require("./message-handlers/exec-handler");
 let renderImageSettings = [];
 let messageHandlers = [];
 
-var SupahFlyBot = function(imageRenderer) {
+var SupahFlyBot = function(imageRenderer, sharedState) {
     renderImageSettings = imageRenderer.imageSet
     messageHandlers = [
         new InlineQueryRenderHandler(),
@@ -19,10 +19,10 @@ var SupahFlyBot = function(imageRenderer) {
         new InlineMarkupHandler(),
         new ReplyMarkupHandler(),
         new InputHandler(),
-        new ChosenInlineResultHandler(),
+        new ChosenInlineResultHandler(sharedState),
         new OmfgHandler(imageRenderer),
         new ExecHandler(),
-        new DefaultHandler()
+        new DefaultHandler(sharedState)
     ];
 };
 

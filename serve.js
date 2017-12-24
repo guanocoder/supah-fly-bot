@@ -14,9 +14,13 @@ var botToken = process.env.BOT_TOKEN || "AbcEEE";
 
 var updates = [];
 
+// This array shall hold last chosen file_ids. All in order for bot to tell the difference
+// between media sent via this same bot's @inline functionality or some unrelated content
+var chosenItemTracker = [];
+
 // for local testing purposes
 app.post('/test', (request, response) => {
-    var bot = new SupahFlyBot(imageTextRenderer);
+    var bot = new SupahFlyBot(imageTextRenderer, chosenItemTracker);
     bot.process(request.body)
     .catch(error => {
         console.log("Error: " + error);
@@ -27,7 +31,7 @@ app.post('/test', (request, response) => {
 // handle telegram webhook requests that supply bot with updates
 app.post(`/${botToken}`, (request, response) => {
     updates.push(request.body);
-    var bot = new SupahFlyBot(imageTextRenderer);
+    var bot = new SupahFlyBot(imageTextRenderer, chosenItemTracker);
     bot.process(request.body)
     .catch(error => {
         console.log("Error: " + error);
