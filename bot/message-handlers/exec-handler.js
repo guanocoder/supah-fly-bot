@@ -24,7 +24,7 @@ Handler.prototype.canHandle = function(update) {
 Handler.prototype.handle = function(update) {
 
     let message = update.message || update.edited_message;
-    let __anyMessageSent = false;
+    let echoOff = false;
     
     function TelegramConsoleImitation() {
         let loggedLines = [];
@@ -42,7 +42,7 @@ Handler.prototype.handle = function(update) {
     }
 
     function sendMessage(messageText) {
-        __anyMessageSent = true;
+        echoOff = true;
         return telegram.sendMessage(message.chat.id, messageText);
     }
     
@@ -56,7 +56,7 @@ Handler.prototype.handle = function(update) {
     }
 
     if(!console.anythingLogged()) {
-        if(__anyMessageSent) {
+        if(echoOff) {
             return Promise.resolve(); // no need to respond then
         } else {
             console.log(__result);
