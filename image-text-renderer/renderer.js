@@ -26,6 +26,15 @@ router.imageSet = {
         fontFile: "arial_white.fnt",
         textPoint: { x: 260, y: 90 },
         textWidth: 180,
+    },
+    "whonniepooh" : { // Вонипух
+        imageFile: "whonniepooh.jpg",
+        imageHeight: 339,
+        imageWidth: 306,
+        mimeType: jimp.MIME_JPEG,
+        fontFile: "verdana.fnt",
+        textPoint: { x: 60, y: 20 },
+        textWidth: 186,        
     }
 };
 
@@ -49,6 +58,35 @@ router.renderOmfgCover = function(chatId, sourceImageUrl) {
     }).catch(error => {
         console.log("Error while rendering OMFG cover: " + error);
     });
+}
+
+function stonedTalk(message) {
+    let vowels = "eyuioa" + "ёуеаоэяию";
+    message = message.toLowerCase();
+    if(message && message.length > 0) {
+        return message.split(' ').map(value => {
+            // remove non-word characters
+            value = value.replace(/[^a-z|^а-я|^ё]/gu, '')  
+            if(value.length > 3) {
+                // remove all vowels in the middle
+                let skipped = 0;
+                return value.split('').reduce((accumulator, currentValue, index, originalArray) => {
+                    if(index !== 0 && index+1 !== originalArray.length) {
+                        if(vowels.indexOf(currentValue) > -1) {
+                            if((++skipped) + 2 < originalArray.length) {
+                                return accumulator; // skip vowel
+                            }
+                        }
+                    }
+                    return accumulator += currentValue;
+                }, '');
+
+            } else {
+                return value;
+            }
+        }).join(' ');
+    }
+    return message;
 }
 
 function renderImageWithText(response, imageKey, text, asThumb) {
@@ -125,7 +163,8 @@ router.preload = function() {
 router.get('/thumb/:image/:text', (request, response) => {
     let imageKey = request.params.image;
     if(imageKey in router.imageSet) {
-        renderImageWithText(response, imageKey, request.params.text, true);
+        let text = (imageKey == 'whonniepooh') ? stonedTalk(request.params.text) : request.params.text;
+        renderImageWithText(response, imageKey, text, true);
     } else {
         response.statusCode = 404;
         response.send("Requested resource not found!");
@@ -135,7 +174,8 @@ router.get('/thumb/:image/:text', (request, response) => {
 router.get('/:image/:text', (request, response) => {
     let imageKey = request.params.image;
     if(imageKey in router.imageSet) {
-        renderImageWithText(response, imageKey, request.params.text, false);
+        let text = (imageKey == 'whonniepooh') ? stonedTalk(request.params.text) : request.params.text;
+        renderImageWithText(response, imageKey, text, false);
     } else {
         response.statusCode = 404;
         response.send("Requested resource not found!");
