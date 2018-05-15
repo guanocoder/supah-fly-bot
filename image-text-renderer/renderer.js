@@ -35,7 +35,16 @@ router.imageSet = {
         fontFile: "verdana.fnt",
         textPoint: { x: 60, y: 20 },
         textWidth: 186,        
-    }
+    },
+    "boozer" : {
+        imageFile: "whonniepooh.jpg",
+        imageHeight: 432,
+        imageWidth: 378,
+        mimeType: jimp.MIME_JPEG,
+        fontFile: "arial_white.fnt",
+        textPoint: { x: 20, y: 20 },
+        textWidth: 338,        
+    },
 };
 
 router.renderOmfgCover = function(chatId, sourceImageUrl) {
