@@ -37,7 +37,7 @@ router.imageSet = {
         textWidth: 186,        
     },
     "boozer" : {
-        imageFile: "whonniepooh.jpg",
+        imageFile: "boozer.jpg",
         imageHeight: 432,
         imageWidth: 378,
         mimeType: jimp.MIME_JPEG,
