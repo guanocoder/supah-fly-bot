@@ -169,10 +169,10 @@ router.preload = function() {
     }
 }
 
-router.get('/thumb/:image/:text', (request, response) => {
+router.get('/thumb/:image', (request, response) => {
     let imageKey = request.params.image;
     if(imageKey in router.imageSet) {
-        let text = (imageKey == 'whonniepooh') ? stonedTalk(request.params.text) : request.params.text;
+        let text = (imageKey == 'whonniepooh') ? stonedTalk(request.query.text) : request.query.text;
         renderImageWithText(response, imageKey, text, true);
     } else {
         response.statusCode = 404;
@@ -180,10 +180,10 @@ router.get('/thumb/:image/:text', (request, response) => {
     }
 });
 
-router.get('/:image/:text', (request, response) => {
+router.get('/:image', (request, response) => {
     let imageKey = request.params.image;
     if(imageKey in router.imageSet) {
-        let text = (imageKey == 'whonniepooh') ? stonedTalk(request.params.text) : request.params.text;
+        let text = (imageKey == 'whonniepooh') ? stonedTalk(request.query.text) : request.query.text;
         renderImageWithText(response, imageKey, text, false);
     } else {
         response.statusCode = 404;

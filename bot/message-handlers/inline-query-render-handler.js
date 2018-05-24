@@ -21,8 +21,8 @@ Handler.prototype.handle = function(update) {
     // url of an image with a rendered text
     // TODO: find out how to get this URL from server context
     let serviceUrl = "http://afternoon-everglades-97004.herokuapp.com";
-    let photo_url = `${serviceUrl}/render/kit/${encodeURIComponent(match[1])}`;
-    let thumb_url = `${serviceUrl}/render/thumb/kit/${encodeURIComponent(match[1])}`;
+    let photo_url = `${serviceUrl}/render/kit?text=${encodeURIComponent(match[1])}`;
+    let thumb_url = `${serviceUrl}/render/thumb/kit?text=${encodeURIComponent(match[1])}`;
     return telegram.answerInlineQuery(update.inline_query.id, JSON.stringify(
         [{
             type: "photo",

@@ -69,8 +69,8 @@ function getTextRenderResults(text) {
         return {
             type: "photo",
             id: String(10000000 + parseInt(Math.random() * 10000000)),
-            photo_url: `${serviceUrl}/render/${imageKey}/${encodeURIComponent(text)}`,
-            thumb_url: `${serviceUrl}/render/thumb/${imageKey}/${encodeURIComponent(text)}`,
+            photo_url: `${serviceUrl}/render/${imageKey}?text=${encodeURIComponent(text)}`,
+            thumb_url: `${serviceUrl}/render/thumb/${imageKey}?text=${encodeURIComponent(text)}`,
             photo_width: renderImageSettings[imageKey].imageWidth,
             photo_height: renderImageSettings[imageKey].imageHeight
         };
