@@ -45,6 +45,15 @@ router.imageSet = {
         textPoint: { x: 20, y: 20 },
         textWidth: 338,        
     },
+    "disgusting-pooh" : {
+        imageFile: "disgusting-pooh.jpg",
+        imageHeight: 404,
+        imageWidth: 400,
+        mimeType: jimp.MIME_JPEG,
+        fontFile: "verdana.fnt",
+        textPoint: { x: 20, y: 20 },
+        textWidth: 360,        
+    }
 };
 
 router.renderOmfgCover = function(chatId, sourceImageUrl) {
