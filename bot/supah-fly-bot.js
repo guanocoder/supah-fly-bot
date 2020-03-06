@@ -7,6 +7,7 @@ var ChosenInlineResultHandler = require('./message-handlers/chosen-inline-result
 var OmfgHandler = require('./message-handlers/omfg-handler');
 var DefaultHandler = require('./message-handlers/default-handler');
 var ExecHandler = require("./message-handlers/exec-handler");
+var AnalyzeHandler = require("./message-handlers/analyze-handler");
 
 let renderImageSettings = [];
 let messageHandlers = [];
@@ -14,6 +15,7 @@ let messageHandlers = [];
 var SupahFlyBot = function(imageRenderer) {
     renderImageSettings = imageRenderer.imageSet
     messageHandlers = [
+        new AnalyzeHandler(),
         new InlineQueryRenderHandler(),
         new InlineQueryHandler(renderImageSettings),
         new InlineMarkupHandler(),

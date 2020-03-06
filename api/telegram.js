@@ -3,10 +3,12 @@
 var requestModule = require('request');
 var botToken = process.env.BOT_TOKEN || "AbcEEE";
 
-exports.sendMessage = function(chatId, text, replyToMessageId, replyMarkup, parse_mode) {
+const TELEGRAM_HOST = "api.telegram.org";
+
+function sendMessage(chatId, text, replyToMessageId, replyMarkup, parse_mode) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/sendMessage`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/sendMessage`,
             form: {
                 chat_id : chatId,
                 text: text,
@@ -25,10 +27,10 @@ exports.sendMessage = function(chatId, text, replyToMessageId, replyMarkup, pars
     });
 };
 
-exports.sendPhoto = function(chatId, photo, options) {
+function sendPhoto(chatId, photo, options) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/sendPhoto`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/sendPhoto`,
             formData: {
                 chat_id: chatId,
                 photo: {
@@ -46,10 +48,10 @@ exports.sendPhoto = function(chatId, photo, options) {
     });
 }
 
-exports.sendDocument = function(chatId, document, options) {
+function sendDocument(chatId, document, options) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/sendDocument`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/sendDocument`,
             formData: {
                 chat_id: chatId,
                 document: {
@@ -67,10 +69,10 @@ exports.sendDocument = function(chatId, document, options) {
     });
 }
 
-exports.sendSticker = function(chatId, sticker, options) {
+function sendSticker(chatId, sticker, options) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/sendSticker`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/sendSticker`,
             formData: {
                 chat_id: chatId,
                 sticker: {
@@ -88,10 +90,10 @@ exports.sendSticker = function(chatId, sticker, options) {
     });
 }
 
-exports.getFile = function(fileId) {
+function getFile(fileId) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/getFile`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/getFile`,
             form: {
                 file_id: fileId,
             }
@@ -114,14 +116,14 @@ exports.getFile = function(fileId) {
     });
 }
 
-exports.getFileUrl = function(filePath) {
-    return `https://api.telegram.org/file/bot${botToken}/${filePath}`;
+function getFileUrl(filePath) {
+    return `https://${TELEGRAM_HOST}/file/bot${botToken}/${filePath}`;
 }
 
-exports.sendChatAction = function(chatId, action) {
+function sendChatAction(chatId, action) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/sendChatAction`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/sendChatAction`,
             form: {
                 chat_id : chatId,
                 action: action
@@ -136,10 +138,10 @@ exports.sendChatAction = function(chatId, action) {
     });
 };
 
-exports.answerCallbackQuery = function(callbackQueryId, text, showAlert = false) {
+function answerCallbackQuery(callbackQueryId, text, showAlert = false) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/answerCallbackQuery`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/answerCallbackQuery`,
             form: {
                 callback_query_id : callbackQueryId,
                 text: text,
@@ -155,10 +157,10 @@ exports.answerCallbackQuery = function(callbackQueryId, text, showAlert = false)
     });
 };
 
-exports.answerInlineQuery = function(inlineQueryId, results) {
+function answerInlineQuery(inlineQueryId, results) {
     return new Promise((resolve, reject) => {
         requestModule.post({
-            url: `https://api.telegram.org/bot${botToken}/answerInlineQuery`,
+            url: `https://${TELEGRAM_HOST}/bot${botToken}/answerInlineQuery`,
             form: {
                 inline_query_id : inlineQueryId,
                 results: results
@@ -171,4 +173,46 @@ exports.answerInlineQuery = function(inlineQueryId, results) {
             }     
         });
     });
+};
+
+function downloadFileAsBase64(fileId) {
+    return getFile(fileId).then(file => {
+        return downloadFileByPathAsBase64(file.file_path);
+    });
+}
+
+function downloadFileByPathAsBase64(filePath) {
+    return new Promise((resolve, reject) => {
+        const options = {
+            host: TELEGRAM_HOST,
+            path: `/file/bot${botToken}/${filePath}`,
+            timeout: 3000
+        }
+        const request = https.request(options, function(response) {  
+            var data = new require('stream').Transform();                                                            
+            response.on('data', function(chunk) {                                       
+                data.push(chunk);                                                    
+            });                                                                         
+            response.on('end', function() {                                             
+                resolve(Buffer.from(data.read()).toString('base64'));
+            });
+        }).on('error', error => {
+            reject(error);
+        }).on('timeout', _ => {
+            request.abort();
+        }).end();
+    });
+}
+
+module.exports = {
+    sendMessage,
+    sendPhoto,
+    sendDocument,
+    sendSticker,
+    getFile,
+    getFileUrl,
+    sendChatAction,
+    answerCallbackQuery,
+    answerInlineQuery,
+    downloadFileAsBase64,
 };
