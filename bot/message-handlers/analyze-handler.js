@@ -59,7 +59,7 @@ Handler.prototype.handle = function(update) {
                                 });
                             } else if (faces && faces.length == 1) {
                                 const loggedLines = [];
-                                for(emotion in faces[0].emotions) {
+                                for(let emotion in faces[0].emotions) {
                                     loggedLines.push(`<code>${emotion}: ${faces[0].emotions[emotion]}%</code>`);
                                 }
                                 return telegram.sendMessage(update.message.chat.id, loggedLines.join("\n")).then(() => {
