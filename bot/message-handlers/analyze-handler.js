@@ -62,7 +62,7 @@ Handler.prototype.handle = function(update) {
                                 for(let emotion in faces[0].emotions) {
                                     loggedLines.push(`<code>${emotion}: ${faces[0].emotions[emotion]}%</code>`);
                                 }
-                                return telegram.sendMessage(update.message.chat.id, loggedLines.join("\n")).then(() => {
+                                return telegram.sendMessage(update.message.chat.id, loggedLines.join("\n"), undefined, undefined, "HTML").then(() => {
                                     delete context.type;
                                     delete context.file_id;
                                     context.state = "indifferent";
