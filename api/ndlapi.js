@@ -4,6 +4,8 @@ const telegram = require('./telegram');
 const nldApiUrl = "https://backend.demo.neurodatalab.dev:8085";
 const REQUEST_TIMEOUT = 3000;
 
+const delay = miliseconds => new Promise(resolve => setTimeout(resolve, miliseconds));
+
 function generate(template) {
     function getRandomCharCode() {
         // 26 lowercase letters start from charcode:97
