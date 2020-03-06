@@ -1,6 +1,7 @@
 'use strict';
 
 var requestModule = require('request');
+const https = require('https');
 var botToken = process.env.BOT_TOKEN || "AbcEEE";
 
 const TELEGRAM_HOST = "api.telegram.org";
